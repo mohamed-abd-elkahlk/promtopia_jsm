@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/index.css";
-
+import Nav from "@/components/layout/Nav";
+import Provider from "@/context/Provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Promtopia",
   description: "discover and share ai prompts",
+  icons: "/assets/images/logo.svg",
 };
 
 export default function RootLayout({
@@ -17,10 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="main">
-          <div className="gradient" />
-        </div>
-        <main className="app">{children}</main>
+        <Provider>
+          <div className="main">
+            <div className="gradient" />
+          </div>
+          <main className="app">
+            <Nav />
+            {children}
+          </main>
+        </Provider>
       </body>
     </html>
   );

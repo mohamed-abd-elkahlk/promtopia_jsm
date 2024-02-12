@@ -1,3 +1,9 @@
+"use client";
+
+import Feed from "@/components/shared/Feed";
+import { Suspense } from "react";
+import Loading from "./loding";
+
 export default function Home() {
   return (
     <section className="w-full  flex-center flex-col">
@@ -11,6 +17,9 @@ export default function Home() {
         discover, create and share creative prompts
       </p>
       {/* Feed */}
+      <Suspense fallback={<Loading />}>
+        <Feed />
+      </Suspense>
     </section>
   );
 }
