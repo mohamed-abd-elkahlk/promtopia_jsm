@@ -17,9 +17,8 @@ const Profile = ({
       </h1>
       <p className="desc text-left">{desc}</p>
       <div className="mt-16 prompt_layout">
-        {data?.map((post: IPost) => (
-          <PromtCard key={post?._id} post={post} />
-        ))}
+        {data &&
+          data?.map((post: IPost) => <PromtCard key={post?._id} post={post} />)}
       </div>
     </section>
   );
