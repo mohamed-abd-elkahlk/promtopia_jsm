@@ -12,7 +12,6 @@ export const GET = async (request: NextRequest) => {
         { prompt: { $regex: query, $options: "i" } },
       ],
     }).populate("createor");
-    console.log(prompts);
 
     if (!prompts)
       return new Response(JSON.stringify({ messge: "no propmt found" }), {

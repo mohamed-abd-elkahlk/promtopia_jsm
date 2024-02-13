@@ -17,9 +17,7 @@ export default function Home() {
         discover, create and share creative prompts
       </p>
       {/* Feed */}
-      <Suspense fallback={<Loading />}>
-        <Feed />
-      </Suspense>
+      <Feed />
     </section>
   );
 }

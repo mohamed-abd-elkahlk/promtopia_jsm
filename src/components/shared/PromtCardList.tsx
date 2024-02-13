@@ -1,6 +1,7 @@
 import { IPost } from "@/types";
 import PromtCard from "./PromtCard";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, Suspense } from "react";
+import Loading from "@/app/loding";
 
 const PromtCardList = async ({
   data,

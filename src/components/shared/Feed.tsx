@@ -1,12 +1,13 @@
 "use client";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, Suspense } from "react";
 import PromtCardList from "./PromtCardList";
 import { IPost } from "@/types";
 import useDebounce from "@/hooks/useDebounce";
+import Loading from "@/app/loding";
 const Feed = () => {
   const [searchText, setSearchText] = useState("");
   const [post, setPost] = useState<IPost[]>();
-  const searchValue = useDebounce(searchText, 1000);
+  const searchValue = useDebounce(searchText, 1500);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -37,11 +38,12 @@ const Feed = () => {
           placeholder="Search for a tag or username"
           value={searchText}
           onChange={handleSearch}
-          required
           className="search_input peer"
         />
       </form>
-      <PromtCardList data={post!} handleClick={setSearchText} />
+      <Suspense fallback={<Loading />}>
+        <PromtCardList data={post!} handleClick={setSearchText} />
+      </Suspense>
     </section>
   );
 };
