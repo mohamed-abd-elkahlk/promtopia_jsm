@@ -1,35 +1,31 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "@/styles/index.css";
-import Nav from "@/components/layout/Nav";
-import Provider from "@/context/Provider";
-import { Suspense } from "react";
-const inter = Inter({ subsets: ["latin"] });
+// @ts-nocheck
 
-export const metadata: Metadata = {
-  title: "Promtopia",
-  description: "discover and share ai prompts",
-  icons: "/assets/images/logo.svg",
+import "@/styles/globals.css";
+
+import Nav from "@/components/Nav";
+import Provider from "@/components/Provider";
+import { ReactNode } from "react";
+
+export const metadata = {
+  title: "Promptopia",
+  description: "Discover & Share AI Prompts",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body>
-        <Provider>
-          <div className="main">
-            <div className="gradient" />
-          </div>
-          <main className="app">
-            <Nav />
-            <Suspense>{children}</Suspense>
-          </main>
-        </Provider>
-      </body>
-    </html>
-  );
-}
+const RootLayout = ({ children }) => (
+  <html lang="en">
+    <body>
+      <Provider>
+        <div className="main">
+          <div className="gradient" />
+        </div>
+
+        <main className="app">
+          <Nav />
+          {children}
+        </main>
+      </Provider>
+    </body>
+  </html>
+);
+
+export default RootLayout;
