@@ -1,8 +1,60 @@
-// @ts-nocheck
+"use client";
 
+import { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
+const Form = ({ type, post, setPost, submitting, handleSubmit }: any) => {
+  if (type === "Edit") {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const promptId = searchParams.get("id");
+
+    const [postUpdate, setPostUpdate] = useState({ prompt: "", tag: "" });
+    const [submitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+      const getPromptDetails = async () => {
+        const response = await fetch(`/api/prompt/${promptId}`);
+        const data = await response.json();
+
+        setPostUpdate({
+          prompt: data.prompt,
+          tag: data.tag,
+        });
+      };
+
+      if (promptId) getPromptDetails();
+    }, [promptId]);
+
+    const updatePrompt = async (e: any) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+
+      if (!promptId) return alert("Missing PromptId!");
+      try {
+        const response = await fetch(`/api/prompt/${promptId}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            prompt: post.prompt,
+            tag: post.tag,
+          }),
+        });
+
+        if (response.ok) {
+          router.push("/");
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+    handleSubmit = updatePrompt;
+    (post = postUpdate), (setPost = setPostUpdate);
+  }
   return (
     <section className="w-full max-w-full flex-start flex-col">
       <h1 className="head_text text-left">
@@ -23,7 +75,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           </span>
 
           <textarea
-            value={post.prompt}
+            value={post?.prompt || ""}
             onChange={(e) => setPost({ ...post, prompt: e.target.value })}
             placeholder="Write your post here"
             required
@@ -39,7 +91,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             </span>
           </span>
           <input
-            value={post.tag}
+            value={post?.tag || ""}
             onChange={(e) => setPost({ ...post, tag: e.target.value })}
             type="text"
             placeholder="#Tag"
