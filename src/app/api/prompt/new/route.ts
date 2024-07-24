@@ -1,6 +1,7 @@
 import Prompt from "@/models/prompt";
 import { connectToDB } from "@/utils/database";
 import { NextRequest } from "next/server";
+import { revalidatePath } from 'next/cache'
 
 export const POST = async (request: NextRequest) => {
   const { userId, prompt, tag } = await request.json();
@@ -14,4 +15,5 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
     return new Response("Failed to create a new prompt", { status: 500 });
   }
+  revalidatePath('/')
 };
