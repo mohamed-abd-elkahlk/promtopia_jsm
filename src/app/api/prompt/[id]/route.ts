@@ -1,7 +1,7 @@
 import Prompt from "@/models/prompt";
 import { connectToDB } from "@/utils/database";
 import { NextRequest } from "next/server";
-
+import { revalidatePath } from 'next/cache'
 export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -44,6 +44,8 @@ export const PATCH = async (
   } catch (error) {
     return new Response("Error Updating Prompt", { status: 500 });
   }
+revalidatePath(`/update-prompt/${existingPrompt._id}`)
+  
 };
 
 export const DELETE = async (
@@ -60,4 +62,6 @@ export const DELETE = async (
   } catch (error) {
     return new Response("Error deleting prompt", { status: 500 });
   }
+  revalidatePath(`/`)
+
 };
